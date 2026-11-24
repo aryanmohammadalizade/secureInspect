@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SecureInspect | System Security</title>
+  <link rel="stylesheet" href="/web/style.css">
+  <script defer src="/web/app.js"></script>
+</head>
+<body>
+  <header class="masthead">
+    <div><span class="eyebrow">SYSTEM SECURITY / SEC-PRJ-7E_25</span><h1>SecureInspect<span>.</span></h1><p>Fake Data Prevention with Conventional Cryptotools</p></div>
+    <div class="header-right"><span class="tag">LOCAL ACADEMIC LAB</span><a href="/docs" target="_blank" rel="noopener">API documentation ↗</a></div>
+  </header>
+  <main>
+    <section class="intro"><div><h2>Protect the measurement.<br>Protect the prediction.</h2><p>Verify industrial inspection data before it enters a corrosion forecast. All asset names, values and thresholds are fictional.</p></div><div class="chips"><span>JWT · HS256</span><span>X.509 · RSA-2048</span><span>SHA-256 signature</span><span>AES-256-GCM</span></div></section>
+    <div class="layout">
+      <section class="panel workflow">
+        <h2><span class="step">01</span> Authenticate</h2>
+        <form id="login-form">
+          <label>Demo username<input id="username" value="sensor-01" autocomplete="username" required></label>
+          <label>Demo password<input id="password" type="password" autocomplete="current-password" placeholder="From the PyCharm terminal" required></label>
+          <button type="submit">Log in</button>
+        </form>
+        <p id="login-status" class="notice" role="status">Not authenticated. Use the generated demo password.</p>
+        <hr>
+        <h2><span class="step">02</span> Prepare signed data</h2>
+        <div class="measurements"><div><small>2023 · baseline</small><strong>10.0 <em>mm</em></strong></div><div><small>2026 · reference reading</small><strong>7.0 <em>mm</em></strong></div></div>
+        <label>Sender scenario<select id="source" disabled><option value="genuine">Genuine reading (7.0 mm)</option><option value="faulty">Trusted sensor signs faulty reading (12.5 mm)</option><option value="stale">Genuine reading signed 10 minutes ago</option></select></label>
+        <button id="prepare" disabled>Prepare signed reading</button>
+        <p id="prepare-status" class="notice" role="status">Choose a synthetic source scenario. The sender signs the measurement and timestamp.</p>
+        <hr>
+        <h2><span class="step">03</span> Simulate transmission</h2>
+        <label>Received 2026 thickness (mm)<input id="received" type="number" min="0.01" max="100" step="any" value="7" required disabled></label>
+        <div class="inline"><button id="tamper" class="secondary" disabled>Modify to 10.0 mm</button><button id="restore" class="secondary" disabled>Restore original</button></div>
+        <label>Transmission scenario<select id="scenario" disabled><option value="normal">Original credentials and signature</option><option value="certificate">Untrusted self-signed certificate</option><option value="signature">Corrupted digital signature</option><option value="token">Invalid JWT</option><option value="missing">Missing JWT</option></select></label>
+        <button id="verify" class="primary" disabled>Verify &amp; store</button>
+        <p class="muted">After acceptance, verify again to demonstrate replay rejection. Prepare a new signed reading for each other test.</p>
+      </section>
+      <div class="right">
+        <section class="panel results" aria-live="polite">
+          <div class="section-top"><h2><span class="step">04</span> Verification result</h2><span id="decision" class="pill">Awaiting data</span></div>
+          <div class="checks"><div>JWT authentication <span id="jwt-check">—</span></div><div>X.509 certificate <span id="cert-check">—</span></div><div>RSA digital signature <span id="sig-check">—</span></div><div>Signed timestamp <span id="fresh-check">—</span></div><div>Engineering plausibility <span id="plaus-check">—</span></div><div>Replay / encrypted storage <span id="store-check">—</span></div></div>
+          <p id="result-text" class="notice">No data has been submitted.</p><p class="muted">Verification API time: <strong id="latency">—</strong> (server processing, excluding network and audit write)</p>
+        </section>
+        <section class="panel impact">
+          <div class="section-top"><h2><span class="step">05</span> Prediction impact</h2><span class="tag">LINEAR BASELINE</span></div>
+          <div class="forecast-values"><div><small>Verified forecast · 2029</small><strong id="verified-value">—</strong></div><div><small>Unprotected scenario · 2029</small><strong id="preview-value">—</strong></div></div>
+          <svg id="chart" viewBox="0 0 440 232" role="img" aria-label="Wall thickness forecast chart"><text x="220" y="120" text-anchor="middle" fill="#64748b">Submit a reading to compare forecasts.</text></svg>
+          <div class="legend"><span><i class="blue"></i> Verified data / forecast</span><span>Dashed grey: synthetic reference (not verified)</span><span><i class="amber"></i> Unverified counterfactual</span><span><i class="red"></i> Illustrative threshold</span></div>
+          <p id="forecast-note" class="notice">The counterfactual is an isolated calculation, never a way to bypass security or save unverified data.</p>
+        </section>
+        <section class="panel storage">
+          <div class="section-top"><h2><span class="step">06</span> Encrypted record</h2><button id="decrypt" class="secondary" disabled>Decrypt authorized record</button></div>
+          <pre id="ciphertext">No accepted record yet.</pre>
+          <pre id="plaintext" hidden></pre>
+          <details><summary>Inspect signed message and certificate</summary><pre id="envelope-view">Prepare a reading to see the actual signed payload.</pre></details>
+        </section>
+        <section class="panel storage"><div class="section-top"><h2><span class="step">07</span> Security audit</h2><span class="tag">LAST 8 REQUESTS</span></div><pre id="audit">Log in to view the persistent audit history.</pre></section>
+      </div>
+    </div>
+    <footer>Independent educational prototype · Synthetic data only · No company systems, branding, credentials or confidential measurements · Not for operational safety decisions.</footer>
+  </main>
+</body>
+</html>
